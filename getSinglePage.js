@@ -66,6 +66,6 @@ function parseComments(body) {
   }; 
 }
 
-// getComments('http://www.womai.com/Product-0-505629.htm', function(){})
+// getComments('http://www.womai.com/Product-0-505632.htm', function(){})
 
 module.exports = getComments;

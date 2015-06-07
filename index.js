@@ -21,29 +21,30 @@ function getGridPage(gridUrl) {
         return host + $(this).attr('href');
       });
       var getPages = [];
+      var pages = [];
 
       for (var i = 0; i < productUrls.length; i++) {
         (function(i) {
           getPages.push(function(cb) {
             getSinglePage(productUrls[i], function(err, result) {
 
-              console.log(productUrls[i]);
-              console.log(result);
+              console.log(productUrls[i])
+              console.log(result)
 
-              cb(err, {
+              pages.push({
                 productUrl: productUrls[i],
                 comments: result
               });
+
+              cb(err);
 
             });
           });
         })(i);
       }
 
-      // console.log(getPages )
-
-      async.parallel(getPages, function(err, results) {
-        // console.log(results)
+      async.waterfall(getPages, function(err, results) {
+        console.log(getPages)
         console.log('DONE!')
       });
 
