@@ -3,6 +3,7 @@ var async   = require('async');
 var gbk = require('gbk');
 var cheerio = require('cheerio');
 var _       = require('lodash');
+var fs = require('fs');
 
 var host = 'http://www.womai.com';
 
@@ -36,6 +37,14 @@ function getGridPage(gridUrl) {
                 comments: result
               });
 
+              var id = productUrls[i].match(/(\d+).htm/).pop();
+
+              fs.writeFile('data/'+ id, resultToString(result), function (err,data) {
+                if(err) {
+                  console.error(err);
+                }
+              });
+
               cb(err);
 
             });
@@ -44,13 +53,26 @@ function getGridPage(gridUrl) {
       }
 
       async.waterfall(getPages, function(err, results) {
-        console.log(getPages)
+        // console.log(getPages)
         console.log('DONE!')
       });
 
     }
   });
 
+}
+
+function resultToString(result) {
+  var str = '';
+  _.each(result, function(data) {
+    if (data && data.comments) {
+      _.each(data.comments, function(c) {
+        str = str + c + '\n';
+      });
+    }
+  });
+
+  return str;
 }
 
 
